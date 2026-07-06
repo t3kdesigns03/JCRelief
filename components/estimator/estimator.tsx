@@ -6,8 +6,9 @@ import { ArrowRight, Sparkles } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { ComparisonView } from "@/components/shared/comparison-view";
+import { Assumptions } from "@/components/shared/Assumptions";
 import { estimate, buildComparison } from "@/lib/estimator";
-import { site, disclaimers } from "@/lib/site";
+import { buildApplyUrl } from "@/lib/apply-prefill";
 import { currency, monthsToLabel } from "@/lib/utils";
 
 /**
@@ -92,13 +93,11 @@ export function Estimator({ compact = false }: { compact?: boolean }) {
         {!compact && (
           <div className="mt-7">
             <Button asChild size="lg" className="w-full sm:w-auto">
-              <Link href={site.applyUrl}>
+              <Link href={buildApplyUrl(totalDebt, monthlyBudget)}>
                 Build my full plan <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
-            <p className="mt-3 text-[11px] leading-relaxed text-muted-foreground">
-              {disclaimers.estimator}
-            </p>
+            <Assumptions className="mt-3" variant="compact" showDisclaimer={false} />
           </div>
         )}
       </div>
@@ -106,6 +105,7 @@ export function Estimator({ compact = false }: { compact?: boolean }) {
       {/* Live comparison */}
       <div>
         <ComparisonView comparison={comparison} />
+        <Assumptions className="mt-4" />
       </div>
     </div>
   );

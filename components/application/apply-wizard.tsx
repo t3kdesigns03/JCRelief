@@ -11,7 +11,6 @@ import {
   Check,
   Sparkles,
   Loader2,
-  PartyPopper,
   ShieldCheck,
 } from "lucide-react";
 
@@ -23,6 +22,8 @@ import { Wordmark } from "@/components/brand/logo";
 import { TradelineView } from "@/components/shared/tradeline-view";
 import { ComparisonView } from "@/components/shared/comparison-view";
 import { TradelineForm, AddAccountButton } from "@/components/application/tradeline-form";
+import { ApplySuccessScreen } from "@/components/auth/apply-success-screen";
+import { Assumptions } from "@/components/shared/Assumptions";
 
 import {
   applicationSchema,
@@ -38,19 +39,26 @@ import {
   type ApplicationData,
 } from "@/lib/application-schema";
 import { estimate, buildComparison, type Tradeline } from "@/lib/estimator";
-import { site, disclaimers } from "@/lib/site";
+import { submitApplication } from "@/lib/actions/submit-application";
+import { ensureApplySession } from "@/lib/auth/bootstrap";
+import type { ApplyPrefill } from "@/lib/apply-prefill";
+import { site } from "@/lib/site";
 import { cn, currency } from "@/lib/utils";
 
 const TOTAL_STEPS = stepMeta.length;
 
-export function ApplyWizard() {
+export function ApplyWizard({ prefill }: { prefill?: ApplyPrefill }) {
   const reduce = useReducedMotion();
   const [step, setStep] = React.useState(0);
   const [maxSeen, setMaxSeen] = React.useState(0);
   const [submitting, setSubmitting] = React.useState(false);
   const [done, setDone] = React.useState(false);
+  const [submitError, setSubmitError] = React.useState<string | null>(null);
+  const [sessionReady, setSessionReady] = React.useState(false);
+  const [sessionError, setSessionError] = React.useState<string | null>(null);
   const [editingId, setEditingId] = React.useState<string | null>(null);
   const [showAdd, setShowAdd] = React.useState(false);
+  const prefillApplied = React.useRef(false);
 
   const form = useForm<ApplicationData>({
     resolver: zodResolver(applicationSchema),
@@ -64,6 +72,7 @@ export function ApplyWizard() {
     trigger,
     watch,
     getValues,
+    setValue,
     formState: { errors },
   } = form;
 
@@ -74,6 +83,49 @@ export function ApplyWizard() {
     // `field.id` remains our real tradeline id for lookups.
     keyName: "_key",
   });
+
+  React.useEffect(() => {
+    let cancelled = false;
+    ensureApplySession().then((result) => {
+      if (cancelled) return;
+      if (result.ok) {
+        setSessionReady(true);
+      } else {
+        setSessionError(result.error ?? "Session unavailable.");
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  React.useEffect(() => {
+    if (prefillApplied.current || !prefill) return;
+    if (prefill.monthlyBudget) {
+      setValue("monthlyBudget", prefill.monthlyBudget);
+    }
+    if (prefill.totalDebt && fields.length === 0) {
+      append({
+        id:
+          typeof crypto !== "undefined" && "randomUUID" in crypto
+            ? crypto.randomUUID()
+            : `tl_${Date.now()}`,
+        creditor: "Combined unsecured debt",
+        type: "credit-card",
+        balance: prefill.totalDebt,
+        limit: Math.round(prefill.totalDebt * 1.2),
+        apr: 22.99,
+        minPayment: Math.round(prefill.totalDebt * 0.025),
+        opened: "",
+        status: "current",
+      });
+      setValue(
+        "currentMonthlyPayment",
+        Math.round(prefill.totalDebt * 0.025),
+      );
+    }
+    prefillApplied.current = true;
+  }, [prefill, fields.length, append, setValue]);
 
   const tradelines = (watch("tradelines") ?? []) as Tradeline[];
 
@@ -91,17 +143,63 @@ export function ApplyWizard() {
   const back = () => goTo(Math.max(step - 1, 0));
 
   const onSubmit = async (data: ApplicationData) => {
+    setSubmitError(null);
     setSubmitting(true);
-    // Simulated persistence. Swap for an API route / Supabase insert.
-    // eslint-disable-next-line no-console
-    console.log("Debt Angel application:", data);
-    await new Promise((r) => setTimeout(r, 1100));
+
+    const session = await ensureApplySession();
+    if (!session.ok) {
+      setSubmitError(session.error ?? "Session unavailable.");
+      setSubmitting(false);
+      return;
+    }
+
+    const result = await submitApplication(data);
     setSubmitting(false);
+
+    if (!result.ok) {
+      setSubmitError(result.error);
+      return;
+    }
+
     setDone(true);
     if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  if (done) return <ThankYou firstName={getValues("firstName")} />;
+  if (sessionError) {
+    return (
+      <div className="mx-auto max-w-xl text-center">
+        <div className="surface ring-gold-soft rounded-3xl p-8 sm:p-12">
+          <h1 className="font-display text-2xl font-semibold tracking-tight">
+            Applications are temporarily unavailable
+          </h1>
+          <p className="mt-3 text-muted-foreground">{sessionError}</p>
+          <div className="mt-8">
+            <Button asChild variant="outline">
+              <Link href="/">Back to home</Link>
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!sessionReady) {
+    return (
+      <div className="mx-auto flex max-w-xl items-center justify-center gap-3 py-24 text-muted-foreground">
+        <Loader2 className="h-5 w-5 animate-spin" />
+        Preparing your secure session…
+      </div>
+    );
+  }
+
+  if (done) {
+    return (
+      <ApplySuccessScreen
+        firstName={getValues("firstName")}
+        email={getValues("email")}
+      />
+    );
+  }
 
   const anim = reduce
     ? {}
@@ -187,6 +285,7 @@ export function ApplyWizard() {
                   errors={errors}
                   tradelines={tradelines}
                   creditPriority={watch("creditPriority")}
+                  submitError={submitError}
                 />
               )}
             </motion.div>
@@ -245,9 +344,7 @@ export function ApplyWizard() {
         </div>
       </form>
 
-      <p className="mt-4 px-2 text-center text-[11px] leading-relaxed text-muted-foreground">
-        {disclaimers.estimator}
-      </p>
+      <Assumptions className="mt-4" />
     </div>
   );
 }
@@ -545,6 +642,7 @@ function ComparisonStep({
         your Debt Angel plan.
       </div>
       <ComparisonView comparison={comparison} />
+      <Assumptions className="mt-4" showDisclaimer={false} variant="compact" />
     </div>
   );
 }
@@ -557,6 +655,7 @@ function SubmitStep({
   errors,
   tradelines,
   creditPriority,
+  submitError,
 }: any) {
   const fit = assessFit({ tradelines, creditPriority });
   return (
@@ -662,36 +761,12 @@ function SubmitStep({
       {errors.consent?.message && (
         <p className="text-xs text-destructive">{errors.consent.message}</p>
       )}
-    </div>
-  );
-}
 
-/* ── Thank you ────────────────────────────────────────────────────────── */
-
-function ThankYou({ firstName }: { firstName?: string }) {
-  return (
-    <div className="mx-auto max-w-xl text-center">
-      <div className="surface ring-gold-soft rounded-3xl p-8 sm:p-12">
-        <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-money/15 text-money ring-1 ring-money/25">
-          <PartyPopper className="h-8 w-8" />
-        </span>
-        <h1 className="mt-6 font-display text-3xl font-semibold tracking-tight">
-          You&rsquo;re on your way{firstName ? `, ${firstName}` : ""}.
-        </h1>
-        <p className="mt-3 text-muted-foreground">
-          Your plan is being prepared. We&rsquo;ll reach out shortly to confirm the
-          details and finalize your path to Debt Zero — Smarter, Faster, Cheaper.
+      {submitError && (
+        <p className="rounded-2xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+          {submitError}
         </p>
-        <div className="mt-6 flex items-center justify-center gap-2 text-sm text-muted-foreground">
-          <ShieldCheck className="h-5 w-5 text-gold" />
-          <span>No upfront fees · No prepayment penalty · You stay in control</span>
-        </div>
-        <div className="mt-8">
-          <Button asChild variant="outline">
-            <Link href="/">Back to home</Link>
-          </Button>
-        </div>
-      </div>
+      )}
     </div>
   );
 }

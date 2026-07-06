@@ -16,6 +16,8 @@ export const site = {
   phone: "(000) 000-0000", // TODO: placeholder — replace with the real number
   email: "hello@debtangel.com",
   applyUrl: "/apply",
+  loginUrl: "/login",
+  dashboardUrl: "/dashboard",
   schedulingUrl:
     process.env.NEXT_PUBLIC_SCHEDULING_URL || "https://cal.com/debt-angel/intro",
   nav: [

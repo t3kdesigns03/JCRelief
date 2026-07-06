@@ -2,9 +2,10 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { ComparisonView } from "@/components/shared/comparison-view";
+import { Assumptions } from "@/components/shared/Assumptions";
 import { Button } from "@/components/ui/button";
 import { estimate, buildComparison } from "@/lib/estimator";
-import { site } from "@/lib/site";
+import { buildApplyUrl } from "@/lib/apply-prefill";
 
 export function ComparisonTeaser() {
   const inputs = {
@@ -28,9 +29,10 @@ export function ComparisonTeaser() {
 
         <div className="mx-auto mt-12 max-w-3xl">
           <ComparisonView comparison={comparison} />
+          <Assumptions className="mt-4" />
           <div className="mt-8 text-center">
             <Button asChild size="lg">
-              <Link href={site.applyUrl}>
+              <Link href={buildApplyUrl(inputs.totalDebt, inputs.monthlyBudget)}>
                 See my real comparison <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>

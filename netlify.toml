@@ -1,7 +1,9 @@
-# Netlify build settings for JCS Financial (Next.js static export)
+# Netlify build settings for Debt Angel (Next.js with server features)
 [build]
   command = "npm run build"
-  publish = "out"
 
 [build.environment]
   NODE_VERSION = "20"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"

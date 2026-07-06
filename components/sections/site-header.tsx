@@ -98,6 +98,12 @@ export function SiteHeader() {
           >
             <Phone className="h-4 w-4 text-gold" /> {site.phone}
           </a>
+          <Link
+            href={site.loginUrl}
+            className="text-sm font-semibold text-foreground/70 transition-colors hover:text-gold"
+          >
+            Sign in
+          </Link>
           <Button asChild size="default">
             <Link href={site.applyUrl}>
               Start free <ArrowRight className="h-4 w-4" />
@@ -137,6 +143,13 @@ export function SiteHeader() {
                   Build my free plan <ArrowRight className="h-4 w-4" />
                 </Link>
               </Button>
+              <Link
+                href={site.loginUrl}
+                onClick={() => setOpen(false)}
+                className="flex items-center justify-center rounded-2xl border border-white/10 py-3 text-base font-semibold text-foreground"
+              >
+                Sign in to your plan
+              </Link>
               <a
                 href={`tel:${site.phone.replace(/[^0-9]/g, "")}`}
                 className="flex items-center justify-center gap-2 rounded-2xl border border-white/10 py-3 text-base font-semibold text-foreground"

@@ -97,6 +97,23 @@ const FEE_HIGH = 0.25; // performance-based fee, high end
 const APR_ASSUMED = 0.2299; // typical revolving APR for the current-path model
 const MIN_PAYMENT_RATE = 0.02; // ~2% of balance as a typical minimum
 
+/**
+ * Example assumptions surfaced in the UI. These are illustrative placeholders
+ * until substantiated with real program data — not offers or guarantees.
+ */
+export const ESTIMATOR_ASSUMPTIONS = {
+  settlementRangeLabel: "40–60%",
+  settlementLowPct: SETTLEMENT_LOW,
+  settlementHighPct: SETTLEMENT_HIGH,
+  /** Midpoint example fee shown in disclosures (actual range used in math: 18–25%). */
+  exampleFeePct: 0.22,
+  feeLowPct: FEE_LOW,
+  feeHighPct: FEE_HIGH,
+  assumedAprPct: APR_ASSUMED * 100,
+  minPaymentRatePct: MIN_PAYMENT_RATE * 100,
+  targetMonths: 40,
+} as const;
+
 export function estimate(inputs: EstimatorInputs): EstimatorResult {
   const totalDebt = Math.max(0, inputs.totalDebt || 0);
   const budget = Math.max(0, inputs.monthlyBudget || 0);
