@@ -33,8 +33,8 @@ export function SiteHeader() {
   const logoBox = cn(
     "relative block overflow-hidden transition-all duration-300",
     scrolled
-      ? "h-14 w-[168px] sm:h-16 sm:w-[192px]"
-      : "h-16 w-[192px] sm:h-20 sm:w-[240px]",
+      ? "h-16 w-[168px] sm:h-20 sm:w-[210px]"
+      : "h-20 w-[210px] sm:h-24 sm:w-[252px]",
   );
 
   const logoImg = (onClick?: () => void) => (
@@ -73,7 +73,7 @@ export function SiteHeader() {
       <div
         className={cn(
           "container flex items-center justify-between gap-4 transition-all duration-300",
-          scrolled ? "h-[4.5rem]" : "h-20 sm:h-24",
+          scrolled ? "h-20 sm:h-24" : "h-24 sm:h-28",
         )}
       >
         {logoImg()}
