@@ -2,8 +2,9 @@ import { ImageResponse } from "next/og";
 
 export const size = { width: 180, height: 180 };
 export const contentType = "image/png";
-// Required so the icon pre-renders to a static PNG under `output: export`.
-export const dynamic = "force-static";
+// Rendered on demand via the edge runtime — next/og needs edge on Netlify,
+// and this avoids a build-time prerender that can fail cross-platform.
+export const runtime = "edge";
 
 export default function AppleIcon() {
   return new ImageResponse(
