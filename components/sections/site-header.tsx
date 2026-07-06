@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 // Soft radial mask so the logo's dark background blends into the black header
 // (the asset has a baked-in gradient background, not transparency).
 const LOGO_MASK =
-  "radial-gradient(125% 110% at 50% 50%, #000 58%, rgba(0,0,0,0.35) 82%, transparent 96%)";
+  "radial-gradient(118% 135% at 50% 50%, #000 68%, transparent 100%)";
 
 export function SiteHeader() {
   const [open, setOpen] = React.useState(false);
@@ -30,9 +30,13 @@ export function SiteHeader() {
     };
   }, [open]);
 
-  const logoClass = cn(
-    "w-auto object-contain transition-all duration-300",
-    scrolled ? "h-16 sm:h-[4.75rem]" : "h-[4.75rem] sm:h-24",
+  // Crop to the logo band (the JPEG has wide dark margins) and fade the edges
+  // so its charcoal background blends into the black header.
+  const logoBox = cn(
+    "relative block overflow-hidden transition-all duration-300",
+    scrolled
+      ? "h-14 w-[156px] sm:h-16 sm:w-[180px]"
+      : "h-16 w-[180px] sm:h-20 sm:w-[224px]",
   );
 
   const logoImg = (onClick?: () => void) => (
@@ -42,16 +46,20 @@ export function SiteHeader() {
       className="flex shrink-0 items-center"
       aria-label={`${site.name} home`}
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/images/brand/debtangel-logo.jpg"
-        alt="Debt Angel"
-        width={816}
-        height={1232}
-        decoding="async"
-        className={logoClass}
+      <span
+        className={logoBox}
         style={{ maskImage: LOGO_MASK, WebkitMaskImage: LOGO_MASK }}
-      />
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/brand/debtangel-logo-horizontal.jpg"
+          alt="Debt Angel"
+          width={1174}
+          height={796}
+          decoding="async"
+          className="h-full w-full object-cover object-center"
+        />
+      </span>
     </Link>
   );
 
@@ -70,7 +78,7 @@ export function SiteHeader() {
       <div
         className={cn(
           "container flex items-center justify-between gap-4 transition-all duration-300",
-          scrolled ? "h-[5.25rem]" : "h-24 sm:h-28",
+          scrolled ? "h-[4.5rem]" : "h-20 sm:h-24",
         )}
       >
         {logoImg()}
