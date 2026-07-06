@@ -666,7 +666,7 @@ function ThankYou({ firstName }: { firstName?: string }) {
           details and finalize your path to Debt Zero — Smarter, Faster, Cheaper.
         </p>
         <div className="mt-6 flex items-center justify-center gap-2 text-sm text-muted-foreground">
-          <LogoMark className="h-6 w-6" />
+          <LogoMark className="h-7 w-auto" />
           <span>No upfront fees · No prepayment penalty · You stay in control</span>
         </div>
         <div className="mt-8">

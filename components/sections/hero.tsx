@@ -108,7 +108,7 @@ function HeroVisual() {
         <div className="relative">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              <LogoMark className="h-11 w-11" />
+              <LogoMark className="h-10 w-auto" />
               <span className="font-display text-lg font-bold">
                 <span className="text-gradient-gold">Debt</span>
                 <span className="text-foreground">Angel</span>

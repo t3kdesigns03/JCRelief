@@ -2,10 +2,22 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 /**
- * Debt Angel brandmark — a gold winged dollar sign inside a halo ring, with a
- * faint money-green glow. Pure inline SVG so it stays crisp at any size and
- * needs no asset pipeline. (Raster logo variants also live in the repo root.)
+ * Debt Angel brandmark — a gold winged dollar sign inside a halo ring, echoing
+ * the winged-$ emblem. Pure inline SVG so it stays crisp at any size.
+ * Wide aspect (~1.65:1): size it with height + `w-auto`.
  */
+const FEATHER = "M0 0 C-2.6 -5 -2.6 -13 0 -18 C2.6 -13 2.6 -5 0 0 Z";
+
+// [rotateDeg, scaleX, scaleY] per feather, innermost → outermost.
+const FEATHERS: [number, number, number][] = [
+  [-8, 0.85, 0.82],
+  [-26, 0.95, 1.08],
+  [-44, 1.0, 1.28],
+  [-62, 0.96, 1.18],
+  [-80, 0.86, 0.98],
+  [-96, 0.7, 0.76],
+];
+
 export function LogoMark({
   className,
   title = "Debt Angel",
@@ -15,48 +27,59 @@ export function LogoMark({
 }) {
   return (
     <svg
-      viewBox="0 0 64 64"
+      viewBox="0 0 104 64"
       role="img"
       aria-label={title}
-      className={cn("h-9 w-9", className)}
+      className={cn("h-10 w-auto", className)}
       xmlns="http://www.w3.org/2000/svg"
     >
       <defs>
-        <linearGradient id="da-gold" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#F3E7BE" />
-          <stop offset="45%" stopColor="#D4AF37" />
-          <stop offset="100%" stopColor="#C9A227" />
+        <linearGradient id="da-gold" x1="0" y1="0" x2="0.6" y2="1">
+          <stop offset="0%" stopColor="#F7EDCC" />
+          <stop offset="42%" stopColor="#E7C64E" />
+          <stop offset="72%" stopColor="#D4AF37" />
+          <stop offset="100%" stopColor="#B8901F" />
         </linearGradient>
         <linearGradient id="da-gold-soft" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#EBD79A" />
+          <stop offset="0%" stopColor="#FBF3D6" />
+          <stop offset="55%" stopColor="#E7C64E" />
           <stop offset="100%" stopColor="#C9A227" />
         </linearGradient>
+        <radialGradient id="da-glow" cx="50%" cy="45%" r="55%">
+          <stop offset="0%" stopColor="#E7C64E" stopOpacity="0.35" />
+          <stop offset="100%" stopColor="#E7C64E" stopOpacity="0" />
+        </radialGradient>
       </defs>
 
-      {/* Halo ring — money-green whisper behind, gold ring in front */}
-      <circle cx="32" cy="31" r="22" fill="none" stroke="#0D8A5C" strokeWidth="3" opacity="0.28" />
-      <circle cx="32" cy="31" r="21" fill="none" stroke="url(#da-gold)" strokeWidth="2.4" opacity="0.55" />
+      {/* soft glow */}
+      <ellipse cx="52" cy="31" rx="40" ry="26" fill="url(#da-glow)" />
 
       {/* Left wing */}
-      <path
-        d="M31 40 C22 28 15 25 5 25 C12 28 13 31 11 35 C17 33 18 36 18 40 C23 37 27 38 31 43 Z"
-        fill="url(#da-gold)"
-      />
-      {/* Right wing (mirror) */}
-      <path
-        d="M33 40 C42 28 49 25 59 25 C52 28 51 31 53 35 C47 33 46 36 46 40 C41 37 37 38 33 43 Z"
-        fill="url(#da-gold)"
-      />
+      <g transform="translate(41 33)" fill="url(#da-gold)">
+        {FEATHERS.map(([r, sx, sy], i) => (
+          <path key={`l${i}`} d={FEATHER} transform={`rotate(${r}) scale(${sx} ${sy})`} />
+        ))}
+      </g>
+      {/* Right wing (mirrored) */}
+      <g transform="translate(63 33) scale(-1 1)" fill="url(#da-gold)">
+        {FEATHERS.map(([r, sx, sy], i) => (
+          <path key={`r${i}`} d={FEATHER} transform={`rotate(${r}) scale(${sx} ${sy})`} />
+        ))}
+      </g>
+
+      {/* Halo ring */}
+      <circle cx="52" cy="33" r="14" fill="#0B0B0B" stroke="url(#da-gold)" strokeWidth="2.6" />
+      <circle cx="52" cy="33" r="11" fill="none" stroke="url(#da-gold-soft)" strokeWidth="1" opacity="0.8" />
 
       {/* Dollar sign */}
       <text
-        x="32"
-        y="34"
+        x="52"
+        y="34.5"
         textAnchor="middle"
         dominantBaseline="central"
         fontFamily="Georgia, 'Times New Roman', serif"
         fontWeight="700"
-        fontSize="26"
+        fontSize="20"
         fill="url(#da-gold-soft)"
       >
         $
@@ -66,9 +89,9 @@ export function LogoMark({
 }
 
 const SIZES = {
-  sm: { gap: "gap-2", mark: "h-8 w-8", text: "text-base" },
-  md: { gap: "gap-2.5", mark: "h-10 w-10", text: "text-xl" },
-  lg: { gap: "gap-3", mark: "h-12 w-12 sm:h-14 sm:w-14", text: "text-2xl sm:text-[1.7rem]" },
+  sm: { gap: "gap-2", mark: "h-9 w-auto", text: "text-base" },
+  md: { gap: "gap-2.5", mark: "h-11 w-auto", text: "text-xl" },
+  lg: { gap: "gap-3", mark: "h-14 w-auto sm:h-[4.25rem]", text: "text-2xl sm:text-[1.9rem]" },
 } as const;
 
 export function Wordmark({
