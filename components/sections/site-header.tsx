@@ -4,9 +4,13 @@ import * as React from "react";
 import Link from "next/link";
 import { Menu, X, Phone, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Wordmark } from "@/components/brand/logo";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
+
+// Soft radial mask so the logo's dark background blends into the black header
+// (the asset has a baked-in gradient background, not transparency).
+const LOGO_MASK =
+  "radial-gradient(125% 110% at 50% 50%, #000 58%, rgba(0,0,0,0.35) 82%, transparent 96%)";
 
 export function SiteHeader() {
   const [open, setOpen] = React.useState(false);
@@ -26,13 +30,38 @@ export function SiteHeader() {
     };
   }, [open]);
 
+  const logoClass = cn(
+    "w-auto object-contain transition-all duration-300",
+    scrolled ? "h-16 sm:h-[4.75rem]" : "h-[4.75rem] sm:h-24",
+  );
+
+  const logoImg = (onClick?: () => void) => (
+    <Link
+      href="/"
+      onClick={onClick}
+      className="flex shrink-0 items-center"
+      aria-label={`${site.name} home`}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/images/brand/debtangel-logo.jpg"
+        alt="Debt Angel"
+        width={816}
+        height={1232}
+        decoding="async"
+        className={logoClass}
+        style={{ maskImage: LOGO_MASK, WebkitMaskImage: LOGO_MASK }}
+      />
+    </Link>
+  );
+
   return (
     <header
       className={cn(
         "sticky top-0 z-50 w-full transition-all duration-300",
         scrolled
           ? "border-b border-gold/20 bg-background/90 shadow-[0_10px_40px_-20px_rgba(0,0,0,0.9)] backdrop-blur-xl"
-          : "border-b border-transparent bg-gradient-to-b from-background/80 to-background/20 backdrop-blur-md",
+          : "border-b border-transparent bg-gradient-to-b from-background/85 to-background/30 backdrop-blur-md",
       )}
     >
       {/* Thin gold accent line */}
@@ -41,12 +70,10 @@ export function SiteHeader() {
       <div
         className={cn(
           "container flex items-center justify-between gap-4 transition-all duration-300",
-          scrolled ? "h-[4.5rem]" : "h-20 sm:h-24",
+          scrolled ? "h-[5.25rem]" : "h-24 sm:h-28",
         )}
       >
-        <Link href="/" className="shrink-0" aria-label={`${site.name} home`}>
-          <Wordmark size="lg" withMark />
-        </Link>
+        {logoImg()}
 
         <nav className="hidden items-center gap-8 lg:flex">
           {site.nav.map((item) => (
