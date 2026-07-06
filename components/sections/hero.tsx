@@ -32,7 +32,7 @@ export function Hero() {
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-background/85 via-background/35 to-background" />
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(75%_60%_at_50%_58%,transparent_0%,rgba(0,0,0,0.45)_100%)]" />
 
-      <div className="container flex min-h-[90vh] flex-col items-center justify-center py-24 text-center sm:py-28">
+      <div className="container flex min-h-[88vh] flex-col items-center justify-center py-20 text-center sm:py-28">
         <motion.div {...rise(0)}>
           <span className="eyebrow backdrop-blur-sm">
             <ShieldCheck className="h-3.5 w-3.5" />
@@ -60,7 +60,7 @@ export function Hero() {
         </motion.p>
 
         <motion.p
-          className="mt-5 max-w-xl text-base leading-relaxed text-cloud/80 [text-shadow:0_1px_12px_rgba(0,0,0,0.6)] sm:text-lg"
+          className="mt-5 hidden max-w-xl text-base leading-relaxed text-cloud/80 [text-shadow:0_1px_12px_rgba(0,0,0,0.6)] sm:block sm:text-lg"
           {...rise(0.22)}
         >
           A modern, transparent program you drive yourself. See every account,

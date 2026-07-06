@@ -192,20 +192,20 @@ export function TradelineView({
                         <button
                           type="button"
                           onClick={() => onEdit(tl.id)}
-                          className="flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+                          className="flex h-10 w-10 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
                           aria-label={`Edit ${tl.creditor}`}
                         >
-                          <Pencil className="h-4 w-4" />
+                          <Pencil className="h-[18px] w-[18px]" />
                         </button>
                       )}
                       {onRemove && (
                         <button
                           type="button"
                           onClick={() => onRemove(tl.id)}
-                          className="flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+                          className="flex h-10 w-10 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
                           aria-label={`Remove ${tl.creditor}`}
                         >
-                          <Trash2 className="h-4 w-4" />
+                          <Trash2 className="h-[18px] w-[18px]" />
                         </button>
                       )}
                     </span>

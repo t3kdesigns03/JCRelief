@@ -193,33 +193,50 @@ export function ApplyWizard() {
           </AnimatePresence>
 
           {/* Nav buttons */}
-          <div className="mt-8 flex items-center justify-between gap-3 border-t border-border pt-6">
+          <div className="mt-8 flex items-center justify-between gap-3 border-t border-white/10 pt-6">
             {step > 0 ? (
-              <Button type="button" variant="ghost" onClick={back}>
+              <Button
+                type="button"
+                variant="ghost"
+                size="lg"
+                onClick={back}
+                className="shrink-0"
+              >
                 <ArrowLeft className="h-4 w-4" /> Back
               </Button>
             ) : (
               <Link
                 href="/"
-                className="text-sm font-medium text-muted-foreground hover:text-foreground"
+                className="shrink-0 px-2 text-sm font-medium text-muted-foreground hover:text-foreground"
               >
                 Exit
               </Link>
             )}
 
             {step < TOTAL_STEPS - 1 ? (
-              <Button type="button" onClick={next}>
+              <Button
+                type="button"
+                size="lg"
+                onClick={next}
+                className="flex-1 sm:flex-none"
+              >
                 Continue <ArrowRight className="h-4 w-4" />
               </Button>
             ) : (
-              <Button type="submit" variant="money" disabled={submitting}>
+              <Button
+                type="submit"
+                variant="money"
+                size="lg"
+                disabled={submitting}
+                className="flex-1 sm:flex-none"
+              >
                 {submitting ? (
                   <>
-                    <Loader2 className="h-4 w-4 animate-spin" /> Building your plan…
+                    <Loader2 className="h-4 w-4 animate-spin" /> Building…
                   </>
                 ) : (
                   <>
-                    Submit application <Check className="h-4 w-4" />
+                    Submit <Check className="h-4 w-4" />
                   </>
                 )}
               </Button>

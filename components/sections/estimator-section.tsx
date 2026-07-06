@@ -3,7 +3,10 @@ import { Estimator } from "@/components/estimator/estimator";
 
 export function EstimatorSection() {
   return (
-    <section id="estimator" className="section scroll-mt-24">
+    <section
+      id="estimator"
+      className="section scroll-mt-24 border-y border-white/5 bg-white/[0.02]"
+    >
       <div className="container">
         <SectionHeading
           eyebrow="Debt Freedom Estimator"
