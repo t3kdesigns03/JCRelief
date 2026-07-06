@@ -44,6 +44,7 @@ export default function OpengraphImage() {
         <img src={markSrc} width={230} height={230} alt="" />
         <div
           style={{
+            display: "flex",
             marginTop: 8,
             fontSize: 84,
             fontWeight: 700,
