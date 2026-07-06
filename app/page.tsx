@@ -8,6 +8,7 @@ import { ComparisonTeaser } from "@/components/sections/comparison-teaser";
 import { Testimonials } from "@/components/sections/testimonials";
 import { Faq } from "@/components/sections/faq";
 import { FinalCta } from "@/components/sections/final-cta";
+import { ClosingCta } from "@/components/sections/closing-cta";
 import { SiteFooter } from "@/components/sections/site-footer";
 
 export default function HomePage() {
@@ -18,12 +19,14 @@ export default function HomePage() {
         <Hero />
         <TrustBar />
         <HowItWorks />
+        {/* Striking emblem CTA elevated near the top of the page */}
+        <FinalCta />
         <Difference />
         <EstimatorSection />
         <ComparisonTeaser />
         <Testimonials />
         <Faq />
-        <FinalCta />
+        <ClosingCta />
       </main>
       <SiteFooter />
     </>

@@ -45,7 +45,7 @@ export function SiteHeader() {
         )}
       >
         <Link href="/" className="shrink-0" aria-label={`${site.name} home`}>
-          <Wordmark size="lg" />
+          <Wordmark size="lg" withMark />
         </Link>
 
         <nav className="hidden items-center gap-8 lg:flex">

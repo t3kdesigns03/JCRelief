@@ -251,7 +251,7 @@ function PhaseNav({
     <div>
       <div className="mb-3 flex items-center justify-between">
         <Link href="/" aria-label={`${site.name} home`}>
-          <Wordmark size="md" />
+          <Wordmark size="md" withMark />
         </Link>
         <span className="text-sm font-semibold text-gold">
           {Math.round(pct)}% complete
