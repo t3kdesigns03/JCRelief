@@ -13,7 +13,7 @@ export const site = {
   mottoShort: "Smarter, Faster, Cheaper.",
   tagline: "Your Debt Zero with the least amount of risk.",
   domain: "debtangel.com",
-  phone: "(800) 555-2016",
+  phone: "(000) 000-0000", // TODO: placeholder — replace with the real number
   email: "hello@debtangel.com",
   applyUrl: "/apply",
   schedulingUrl:
