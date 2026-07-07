@@ -7,6 +7,7 @@ import { isVerifiedUser } from "@/lib/auth/session";
 import { rowToTradeline, normalizeComparison } from "@/lib/plan";
 import { PlanStatus } from "@/components/dashboard/plan-status";
 import { ComparisonView } from "@/components/shared/comparison-view";
+import { PlanProgressPanel } from "@/components/financial/PlanProgressPanel";
 import { TradelineView } from "@/components/shared/tradeline-view";
 import { Assumptions } from "@/components/shared/Assumptions";
 import { Wordmark } from "@/components/brand/logo";
@@ -111,6 +112,12 @@ export default async function PlanDetailPage({ params }: PageProps) {
             </h2>
             <Assumptions className="mb-4" showDisclaimer={false} />
             <ComparisonView comparison={comparison} />
+            <PlanProgressPanel
+              className="mt-8"
+              comparison={comparison}
+              currentMonthlyPayment={Number(app.current_monthly_payment) || 0}
+              monthlyBudget={Number(app.monthly_budget) || 0}
+            />
           </div>
         )}
 

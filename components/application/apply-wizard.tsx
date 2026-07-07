@@ -21,6 +21,8 @@ import { RadioGroup, RadioCard } from "@/components/ui/radio-group";
 import { Wordmark } from "@/components/brand/logo";
 import { TradelineView } from "@/components/shared/tradeline-view";
 import { ComparisonView } from "@/components/shared/comparison-view";
+import { CashFlowSummary } from "@/components/financial/CashFlowSummary";
+import { PlanProgressPanel } from "@/components/financial/PlanProgressPanel";
 import { TradelineForm, AddAccountButton } from "@/components/application/tradeline-form";
 import { ApplySuccessScreen } from "@/components/auth/apply-success-screen";
 import { Assumptions } from "@/components/shared/Assumptions";
@@ -265,7 +267,14 @@ export function ApplyWizard({ prefill }: { prefill?: ApplyPrefill }) {
               )}
 
               {step === 2 && (
-                <MonthlyStep register={register} control={control} errors={errors} />
+                <MonthlyStep
+                  register={register}
+                  control={control}
+                  errors={errors}
+                  tradelines={tradelines}
+                  currentMonthlyPayment={Number(watch("currentMonthlyPayment")) || 0}
+                  monthlyBudget={Number(watch("monthlyBudget")) || 0}
+                />
               )}
 
               {step === 3 && <ReviewStep tradelines={tradelines} onEditJump={() => goTo(1)} />}
@@ -534,7 +543,26 @@ function AccountsStep({
 
 /* ── Step 3: Monthly picture ──────────────────────────────────────────── */
 
-function MonthlyStep({ register, control, errors }: any) {
+function MonthlyStep({
+  register,
+  control,
+  errors,
+  tradelines,
+  currentMonthlyPayment,
+  monthlyBudget,
+}: {
+  register: any;
+  control: any;
+  errors: any;
+  tradelines: Tradeline[];
+  currentMonthlyPayment: number;
+  monthlyBudget: number;
+}) {
+  const minSum = tradelines.reduce((a, t) => a + (t.minPayment || 0), 0);
+  const debtPayment = currentMonthlyPayment || minSum;
+  const budget = monthlyBudget || Math.max(minSum * 0.7, 150);
+  const showFlow = tradelines.length > 0 && (debtPayment > 0 || budget > 0);
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -587,6 +615,15 @@ function MonthlyStep({ register, control, errors }: any) {
           <p className="mt-1 text-xs text-destructive">{errors.employment.message}</p>
         )}
       </div>
+
+      {showFlow && (
+        <div className="rounded-2xl border border-white/10 bg-muted/30 p-4 sm:p-5">
+          <CashFlowSummary
+            currentMonthlyPayment={debtPayment}
+            monthlyBudget={budget}
+          />
+        </div>
+      )}
     </div>
   );
 }
@@ -643,6 +680,12 @@ function ComparisonStep({
       </div>
       <Assumptions className="mb-4" showDisclaimer={false} />
       <ComparisonView comparison={comparison} />
+      <PlanProgressPanel
+        className="mt-8"
+        comparison={comparison}
+        currentMonthlyPayment={inputs.currentMonthlyPayment}
+        monthlyBudget={inputs.monthlyBudget}
+      />
     </div>
   );
 }

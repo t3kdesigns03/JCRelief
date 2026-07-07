@@ -9,6 +9,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { TradelineView } from "@/components/shared/tradeline-view";
 import { ComparisonView } from "@/components/shared/comparison-view";
+import { PlanProgressPanel } from "@/components/financial/PlanProgressPanel";
+import { CashFlowSummary } from "@/components/financial/CashFlowSummary";
 import { Assumptions } from "@/components/shared/Assumptions";
 import { TradelineForm, AddAccountButton } from "@/components/application/tradeline-form";
 import { estimate, buildComparison, type Tradeline } from "@/lib/estimator";
@@ -157,6 +159,15 @@ export function EditAccounts({
             />
           </div>
         </div>
+        {tradelines.length > 0 && (currentMonthlyPayment > 0 || monthlyBudget > 0) && (
+          <div className="mt-5 rounded-2xl border border-white/10 bg-muted/30 p-4 sm:p-5">
+            <CashFlowSummary
+              currentMonthlyPayment={currentMonthlyPayment || minSum}
+              monthlyBudget={monthlyBudget || Math.max(minSum * 0.7, 150)}
+              planSuggestedMonthly={comparison?.proposed.monthlyPayment}
+            />
+          </div>
+        )}
       </section>
 
       {/* Live comparison preview */}
@@ -171,6 +182,12 @@ export function EditAccounts({
           </div>
           <Assumptions className="mb-4" showDisclaimer={false} />
           <ComparisonView comparison={comparison} />
+          <PlanProgressPanel
+            className="mt-8"
+            comparison={comparison}
+            currentMonthlyPayment={currentMonthlyPayment || minSum}
+            monthlyBudget={monthlyBudget || Math.max(minSum * 0.7, 150)}
+          />
         </section>
       )}
 
