@@ -10,17 +10,24 @@ function safeNext(next: string | null): string {
 }
 
 /**
- * Resolve the origin to redirect back to. Behind Netlify/proxies the request
- * origin can be unreliable, so prefer the configured public site URL.
+ * Resolve the origin to redirect back to. The auth cookie is set on the domain
+ * the callback runs on, so we must redirect to that SAME origin (this is what
+ * lets multiple domains — e.g. mydebtangel.com and debtangel.t3kdesigns.app —
+ * each sign in correctly). Behind Netlify's proxy the forwarded headers carry
+ * the public host; fall back to the request origin, then the configured URL.
  */
-function resolveOrigin(requestOrigin: string): string {
-  const configured = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
-  return configured || requestOrigin;
+function resolveOrigin(request: Request, requestOrigin: string): string {
+  const forwardedHost = request.headers.get("x-forwarded-host");
+  const forwardedProto = request.headers.get("x-forwarded-proto") ?? "https";
+  if (forwardedHost) return `${forwardedProto}://${forwardedHost}`;
+  if (requestOrigin && !requestOrigin.startsWith("http://localhost"))
+    return requestOrigin;
+  return process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") || requestOrigin;
 }
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
-  const base = resolveOrigin(origin);
+  const base = resolveOrigin(request, origin);
   const next = safeNext(searchParams.get("next"));
 
   // Token-hash flow (recommended for @supabase/ssr magic links).
