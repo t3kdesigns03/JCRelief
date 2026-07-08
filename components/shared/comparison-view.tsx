@@ -3,7 +3,7 @@
 import * as React from "react";
 import { ArrowDown, Clock, TrendingDown, Wallet } from "lucide-react";
 import type { Comparison } from "@/lib/estimator";
-import { currency, monthsToLabel, percent } from "@/lib/utils";
+import { currency, monthsToLabel } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 
 /**
@@ -17,7 +17,7 @@ export function ComparisonView({
   comparison: Comparison;
   className?: string;
 }) {
-  const { amountOwed, current, proposed, totalSavings, savingsPct } = comparison;
+  const { amountOwed, current, proposed, totalSavings } = comparison;
 
   const maxTotal = Math.max(amountOwed, proposed.totalCost, 1);
   const currentBar = (amountOwed / maxTotal) * 100;
@@ -25,20 +25,21 @@ export function ComparisonView({
 
   return (
     <div className={cn("w-full", className)}>
-      {/* Headline savings */}
+      {/* Headline: difference between the two paths */}
       <div className="surface ring-gold-soft relative overflow-hidden p-6 text-center sm:p-8">
         <div className="absolute inset-0 grid-noise opacity-60" aria-hidden />
         <div className="relative">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gold">
-            Estimated savings · illustrative
+            Estimated difference versus minimum payments · illustrative
           </p>
           <p className="num-display mt-2 text-5xl font-bold text-gradient-money sm:text-6xl">
             {currency(totalSavings)}
           </p>
           <p className="mt-2 text-sm text-foreground/60">
-            About {percent(savingsPct)} less than the {currency(amountOwed)} you owe,
-            based on typical settlement ranges and program fees. An estimate, not an
-            offer — actual results vary.
+            Estimated difference between continuing minimum payments and a structured
+            Debt Angel plan, based on typical settlement ranges and program fees. An
+            illustration, not an offer or guarantee — actual results vary. Debt
+            resolution may negatively affect your credit; forgiven debt may be taxable.
           </p>
         </div>
       </div>
@@ -98,7 +99,7 @@ export function ComparisonView({
         <div className="my-3 flex items-center gap-2 pl-1 text-money">
           <ArrowDown className="h-4 w-4" />
           <span className="text-sm font-semibold">
-            Estimated savings {currency(totalSavings)}
+            Estimated difference {currency(totalSavings)}
           </span>
         </div>
         <Bar

@@ -17,12 +17,12 @@ const playfair = Playfair_Display({
 });
 
 const description =
-  "Debt Angel — a modern, transparent debt resolution program. See every account, compare your plan in real dollars, and reach Debt Zero Smarter, Faster, Cheaper. No bankruptcy, foreclosure, or repossession.";
+  "Debt Angel — a modern, transparent debt resolution program for qualifying unsecured debt. See every account and compare a structured plan against your current path in real dollars, before you decide. Not bankruptcy, and not a foreclosure or repossession program.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(`https://${site.domain}`),
   title: {
-    default: `${site.name} — ${site.mottoShort} Your Debt Zero.`,
+    default: `${site.name} — ${site.mottoShort}`,
     template: `%s · ${site.name}`,
   },
   description,
