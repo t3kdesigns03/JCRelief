@@ -52,38 +52,22 @@ export function Assumptions({
         <Info className="h-4 w-4 shrink-0 text-gold" aria-hidden />
         How these numbers work
       </p>
-      <p className="mt-2 text-[13px] leading-relaxed text-foreground/75">
-        The current path assumes <strong className="font-medium">minimum payments
-        only, with no new charges</strong>. The Debt Angel estimate assumes{" "}
-        <strong className="font-medium">typical settlement ranges and program
-        fees</strong>. These are examples for illustration — not an offer or a
-        guarantee — and actual results vary.
-      </p>
-      <p className="mt-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-gold/90">
-        Example assumptions
-      </p>
-      <ul className="mt-2 space-y-1.5 text-xs leading-relaxed text-muted-foreground">
+      <ul className="mt-2 list-disc space-y-1.5 pl-5 text-[13px] leading-relaxed text-foreground/75">
         <li>
-          <strong className="font-medium text-foreground/70">
-            Settlement range (example):
-          </strong>{" "}
-          {settlementRangeLabel} of enrolled balances — illustrative until we
-          substantiate outcomes with real program data.
+          The &ldquo;current path&rdquo; assumes you continue making only minimum
+          payments with no new charges.
         </li>
         <li>
-          <strong className="font-medium text-foreground/70">
-            Performance fee (example):
-          </strong>{" "}
-          {Math.round(exampleFeePct * 100)}% of enrolled debt shown as a
-          midpoint example; our model uses a {Math.round(feeLowPct * 100)}–
-          {Math.round(feeHighPct * 100)}% range for projections.
+          The Debt Angel estimate assumes typical settlement ranges (example:
+          40&ndash;60%) and a performance fee (example range: 18&ndash;25%).
         </li>
         <li>
-          <strong className="font-medium text-foreground/70">
-            Current-path model:
-          </strong>{" "}
-          ~{minPaymentRatePct}% minimum payments at ~{assumedAprPct.toFixed(1)}%
-          APR — a typical revolving baseline, not your exact creditor terms.
+          These are illustrative only and not a guarantee of what you will pay or
+          how long it will take.
+        </li>
+        <li>
+          Actual results vary significantly based on your creditors, your specific
+          situation, and consistent funding of the plan.
         </li>
       </ul>
       {showDisclaimer && (

@@ -36,10 +36,17 @@ export function ComparisonView({
             {currency(totalSavings)}
           </p>
           <p className="mt-2 text-sm text-foreground/60">
-            Estimated difference between continuing minimum payments and a structured
-            Debt Angel plan, based on typical settlement ranges and program fees. An
-            illustration, not an offer or guarantee — actual results vary. Debt
-            resolution may negatively affect your credit; forgiven debt may be taxable.
+            This shows the estimated difference between continuing minimum payments
+            on your current path versus an estimated Debt Angel plan. The Debt Angel
+            estimate uses typical settlement ranges and program fees. These are
+            examples for illustration only. Your actual results will depend on your
+            specific creditors, balances, ability to fund the plan consistently, and
+            creditor participation. Not all accounts settle. Debt resolution may
+            negatively affect your credit, and forgiven debt may be taxable.
+          </p>
+          <p className="mt-3 text-xs text-foreground/45">
+            Resolutions, fees, timelines, and figures vary. Not an offer or
+            guarantee. This is not financial, legal, or tax advice.
           </p>
         </div>
       </div>
