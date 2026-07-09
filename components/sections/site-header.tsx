@@ -37,6 +37,12 @@ export function SiteHeader() {
       : "h-16 w-[188px] sm:h-24 sm:w-[252px]",
   );
 
+  const navLinks = [
+    ...site.nav,
+    { label: "Privacy", href: "/privacy" },
+    { label: "Terms", href: "/terms" },
+  ];
+
   const logoImg = (onClick?: () => void) => (
     <Link
       href="/"
@@ -79,7 +85,7 @@ export function SiteHeader() {
         {logoImg()}
 
         <nav className="hidden items-center gap-8 lg:flex">
-          {site.nav.map((item) => (
+          {navLinks.map((item) => (
             <Link
               key={item.href}
               href={item.href}
@@ -126,7 +132,7 @@ export function SiteHeader() {
       {open && (
         <div className="lg:hidden">
           <div className="container flex flex-col gap-1 border-t border-white/10 pb-8 pt-4">
-            {site.nav.map((item) => (
+            {navLinks.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}

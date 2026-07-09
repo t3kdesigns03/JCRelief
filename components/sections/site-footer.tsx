@@ -85,9 +85,31 @@ export function SiteFooter() {
           <p className="text-xs leading-relaxed text-cloud/50">
             {disclaimers.footer}
           </p>
-          <p className="mt-4 text-xs text-cloud/40">
-            © {new Date().getFullYear()} {site.name}. All rights reserved.
-          </p>
+          <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-xs text-cloud/40">
+              © {new Date().getFullYear()} {site.name}. All rights reserved.
+            </p>
+            <div className="flex flex-wrap items-center gap-4 text-xs">
+              <Link
+                href="/privacy"
+                className="text-cloud/60 transition-colors hover:text-gold"
+              >
+                Privacy Policy
+              </Link>
+              <Link
+                href="/terms"
+                className="text-cloud/60 transition-colors hover:text-gold"
+              >
+                Terms of Service
+              </Link>
+              <Link
+                href="/state-availability"
+                className="text-cloud/60 transition-colors hover:text-gold"
+              >
+                State Availability
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </footer>
