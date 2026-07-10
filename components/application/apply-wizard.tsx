@@ -831,7 +831,9 @@ function SubmitStep({
                 >
                   Privacy Policy
                 </Link>
-                , and I understand the risks and my rights.
+                . I understand the risks, that results are not guaranteed, that I
+                own and control the dedicated account funds, and that I can cancel
+                anytime.
               </span>
             </label>
           )}

@@ -2,8 +2,8 @@
 
 # Debt Angel — Privacy Policy
 
-**Effective date:** [DATE]
-**Last updated:** [DATE]
+**Effective date:** July 10, 2026
+**Last updated:** July 10, 2026
 
 ## 1. Introduction
 
@@ -122,8 +122,8 @@ If you have questions or requests about this Policy or your information, contact
 [DEBT ANGEL LEGAL ENTITY NAME]
 Attn: Privacy
 [MAILING ADDRESS]
-Email: hello@mydebtangel.com
-Phone: [PHONE]
+Email: support@debtangel.example
+Phone: (000) 000-0000
 
 ---
 *This template does not constitute legal advice. Have it reviewed by qualified counsel before publication.*

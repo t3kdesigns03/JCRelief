@@ -2,8 +2,8 @@
 
 # Debt Angel — Program Terms & Terms of Service
 
-**Effective date:** [DATE]
-**Last updated:** [DATE]
+**Effective date:** July 10, 2026
+**Last updated:** July 10, 2026
 
 ## 1. Acceptance of These Terms
 
@@ -58,7 +58,7 @@ You agree to:
 
 ## 8. Cancellation and Refunds
 
-- **You may cancel at any time**, for any reason, by contacting us at hello@mydebtangel.com or [PHONE].
+- **You may cancel at any time**, for any reason, by contacting us at support@debtangel.example or (000) 000-0000.
 - On cancellation, you are entitled to the funds remaining in your dedicated account, **less any performance-based fees already earned** for debts that were resolved and any fees charged by the account provider.
 - Because there are no upfront fees, you are not charged for settlements that have not occurred.
 - [ADD any additional cancellation, cooling-off, or refund rights required by your state(s), as confirmed by counsel.]
@@ -102,8 +102,8 @@ The Services are offered only in states where Debt Angel is authorized to operat
 
 [DEBT ANGEL LEGAL ENTITY NAME]
 [MAILING ADDRESS]
-Email: hello@mydebtangel.com
-Phone: [PHONE]
+Email: support@debtangel.example
+Phone: (000) 000-0000
 
 ---
 *This template does not constitute legal advice. Have it reviewed by qualified counsel before publication, especially given federal and state debt-settlement regulations.*

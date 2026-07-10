@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { SiteHeader } from "@/components/sections/site-header";
 import { SiteFooter } from "@/components/sections/site-footer";
+import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
@@ -24,7 +25,7 @@ export default function PrivacyPolicyPage() {
             Privacy Policy
           </h1>
           <p className="mt-3 text-sm text-foreground/50">
-            Effective date: [DATE] &middot; Last updated: [DATE]
+            Effective date: July 10, 2026 &middot; Last updated: July 10, 2026
           </p>
 
           <div className="legal-body mt-10 space-y-8 text-[15px] leading-relaxed text-foreground/75 [&_h2]:font-display [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-foreground [&_h3]:font-semibold [&_h3]:text-foreground/90 [&_ul]:list-disc [&_ul]:space-y-1.5 [&_ul]:pl-5 [&_a]:text-gold [&_a]:underline">
@@ -270,9 +271,9 @@ export default function PrivacyPolicyPage() {
               <p>
                 [DEBT ANGEL LEGAL ENTITY NAME], Attn: Privacy, [MAILING ADDRESS]
                 <br />
-                Email: <a href="mailto:support@debtangel.example">support@debtangel.example</a>
+                Email: <a href={`mailto:${site.email}`}>{site.email}</a>
                 <br />
-                Phone: [PHONE]
+                Phone: {site.phone}
               </p>
             </section>
           </div>

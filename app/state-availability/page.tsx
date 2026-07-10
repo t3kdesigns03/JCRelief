@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteHeader } from "@/components/sections/site-header";
 import { SiteFooter } from "@/components/sections/site-footer";
+import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "State Availability",
@@ -29,7 +30,7 @@ export default function StateAvailabilityPage() {
           <h1 className="font-display text-3xl font-bold tracking-tight sm:text-4xl">
             State availability
           </h1>
-          <p className="mt-3 text-sm text-foreground/50">Last updated: [DATE]</p>
+          <p className="mt-3 text-sm text-foreground/50">Last updated: July 10, 2026</p>
 
           <div className="legal-body mt-10 space-y-8 text-[15px] leading-relaxed text-foreground/75 [&_h2]:font-display [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-foreground [&_a]:text-gold [&_a]:underline">
             <section className="space-y-3">
@@ -59,8 +60,8 @@ export default function StateAvailabilityPage() {
                 <p className="rounded-2xl border border-gold/25 bg-gold/[0.06] px-4 py-4 text-sm text-foreground/75">
                   Our list of available states is being finalized. To confirm whether
                   the program is available where you live, please{" "}
-                  <a href="mailto:hello@mydebtangel.com">contact us</a> or call
-                  [PHONE].
+                  <a href={`mailto:${site.email}`}>contact us</a> or call{" "}
+                  {site.phone}.
                 </p>
               )}
             </section>
@@ -72,8 +73,8 @@ export default function StateAvailabilityPage() {
                 situations may not qualify, and Debt Angel is designed for qualifying
                 unsecured debt only. If you have questions about availability in your
                 state, contact us at{" "}
-                <a href="mailto:hello@mydebtangel.com">hello@mydebtangel.com</a> or
-                [PHONE].
+                <a href={`mailto:${site.email}`}>{site.email}</a> or{" "}
+                {site.phone}.
               </p>
               <p>
                 For the full program terms, see our{" "}
