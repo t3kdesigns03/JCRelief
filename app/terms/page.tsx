@@ -169,7 +169,7 @@ export default function TermsOfServicePage() {
               <ul>
                 <li>
                   You may cancel at any time, for any reason, by contacting us at{" "}
-                  <a href="mailto:hello@mydebtangel.com">hello@mydebtangel.com</a> or
+                  <a href="mailto:support@debtangel.example">support@debtangel.example</a> or
                   [PHONE].
                 </li>
                 <li>
@@ -303,7 +303,7 @@ export default function TermsOfServicePage() {
               <p>
                 [DEBT ANGEL LEGAL ENTITY NAME], [MAILING ADDRESS]
                 <br />
-                Email: <a href="mailto:hello@mydebtangel.com">hello@mydebtangel.com</a>
+                Email: <a href="mailto:support@debtangel.example">support@debtangel.example</a>
                 <br />
                 Phone: [PHONE]
               </p>

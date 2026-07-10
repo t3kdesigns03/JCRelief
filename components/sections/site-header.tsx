@@ -39,6 +39,7 @@ export function SiteHeader() {
 
   const navLinks = [
     ...site.nav,
+    { label: "Program Agreement", href: "/agreement" },
     { label: "Privacy", href: "/privacy" },
     { label: "Terms", href: "/terms" },
   ];

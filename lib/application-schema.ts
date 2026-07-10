@@ -132,6 +132,13 @@ export const applicationSchema = z.object({
   consent: z.literal(true, {
     errorMap: () => ({ message: "Please confirm to continue" }),
   }),
+  // Mandatory pre-submit review of the legal documents (TSR best practice).
+  agreementReviewed: z.literal(true, {
+    errorMap: () => ({
+      message:
+        "Please confirm you've reviewed the Program Agreement, Terms, and Privacy Policy",
+    }),
+  }),
 });
 
 export type ApplicationData = z.infer<typeof applicationSchema>;
@@ -150,6 +157,7 @@ export const defaultValues: Partial<ApplicationData> = {
   creditPriority: undefined,
   timeline: undefined,
   consent: undefined as unknown as true,
+  agreementReviewed: undefined as unknown as true,
 };
 
 /** A newly-added, empty tradeline row. */
@@ -192,7 +200,7 @@ export const stepFields: (keyof ApplicationData)[][] = [
   ["currentMonthlyPayment", "monthlyBudget", "employment"],
   [], // tradeline review (display)
   [], // comparison (display)
-  ["goal", "creditPriority", "timeline", "consent"],
+  ["goal", "creditPriority", "timeline", "consent", "agreementReviewed"],
 ];
 
 export const stepMeta = [

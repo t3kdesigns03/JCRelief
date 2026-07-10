@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { Reveal } from "@/components/reveal";
 
@@ -52,6 +53,31 @@ export function WhatItIs() {
             </div>
           </Reveal>
         </div>
+
+        <Reveal delay={0.1}>
+          <p className="mx-auto mt-8 max-w-2xl text-center text-sm leading-relaxed text-foreground/60">
+            <span className="font-semibold text-foreground/80">
+              Eligibility &amp; availability:
+            </span>{" "}
+            Debt Angel is available only in states where it is authorized to
+            operate, and some debts, creditors, and situations may not qualify.
+            You can review the full{" "}
+            <Link
+              href="/agreement"
+              className="font-medium text-gold hover:underline"
+            >
+              Program Agreement
+            </Link>{" "}
+            before enrolling and{" "}
+            <Link
+              href="/state-availability"
+              className="font-medium text-gold hover:underline"
+            >
+              check state availability
+            </Link>
+            .
+          </p>
+        </Reveal>
       </div>
     </section>
   );

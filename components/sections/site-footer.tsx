@@ -1,10 +1,23 @@
 import Link from "next/link";
-import { Phone, Mail } from "lucide-react";
+import { Phone, Mail, Check } from "lucide-react";
 import { site, disclaimers } from "@/lib/site";
+import { complianceStrip } from "@/lib/disclosures";
 
 export function SiteFooter() {
   return (
     <footer className="border-t border-border bg-ink text-cloud">
+      {/* Compliance strip */}
+      <div className="border-b border-white/10 bg-black/40">
+        <div className="container flex flex-wrap items-center justify-center gap-x-5 gap-y-2 py-3.5 text-center text-[11px] font-medium text-cloud/70 sm:text-xs">
+          {complianceStrip.map((item) => (
+            <span key={item} className="flex items-center gap-1.5">
+              <Check className="h-3.5 w-3.5 shrink-0 text-gold" aria-hidden />
+              {item}
+            </span>
+          ))}
+        </div>
+      </div>
+
       <div className="container py-14">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
           <div>
@@ -78,6 +91,20 @@ export function SiteFooter() {
               <li>No prepayment penalty</li>
               <li>You approve every step</li>
             </ul>
+            <div className="mt-4 flex flex-col gap-1.5 text-sm">
+              <Link
+                href="/agreement"
+                className="text-cloud/70 transition-colors hover:text-gold"
+              >
+                Read the full Program Agreement →
+              </Link>
+              <Link
+                href="/state-availability"
+                className="text-cloud/70 transition-colors hover:text-gold"
+              >
+                Check state availability →
+              </Link>
+            </div>
           </div>
         </div>
 
@@ -101,6 +128,12 @@ export function SiteFooter() {
                 className="text-cloud/60 transition-colors hover:text-gold"
               >
                 Terms of Service
+              </Link>
+              <Link
+                href="/agreement"
+                className="text-cloud/60 transition-colors hover:text-gold"
+              >
+                Program Agreement
               </Link>
               <Link
                 href="/state-availability"

@@ -270,7 +270,7 @@ export default function PrivacyPolicyPage() {
               <p>
                 [DEBT ANGEL LEGAL ENTITY NAME], Attn: Privacy, [MAILING ADDRESS]
                 <br />
-                Email: <a href="mailto:hello@mydebtangel.com">hello@mydebtangel.com</a>
+                Email: <a href="mailto:support@debtangel.example">support@debtangel.example</a>
                 <br />
                 Phone: [PHONE]
               </p>

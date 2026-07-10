@@ -7,6 +7,7 @@ import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { ComparisonView } from "@/components/shared/comparison-view";
 import { Assumptions } from "@/components/shared/Assumptions";
+import { ImportantDisclosuresPanel } from "@/components/shared/disclosures";
 import { estimate, buildComparison } from "@/lib/estimator";
 import { buildApplyUrl } from "@/lib/apply-prefill";
 import { currency, monthsToLabel } from "@/lib/utils";
@@ -38,6 +39,7 @@ export function Estimator({ compact = false }: { compact?: boolean }) {
   );
 
   return (
+    <div className="space-y-6">
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8">
       {/* Controls */}
       <div className="rounded-3xl border border-white/10 bg-card p-6 shadow-soft sm:p-8">
@@ -108,6 +110,10 @@ export function Estimator({ compact = false }: { compact?: boolean }) {
         <Assumptions className="mb-4" />
         <ComparisonView comparison={comparison} />
       </div>
+    </div>
+
+    {/* Negative-consequence + dedicated-account disclosures — open by default. */}
+    <ImportantDisclosuresPanel />
     </div>
   );
 }

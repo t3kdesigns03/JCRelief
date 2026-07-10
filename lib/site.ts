@@ -14,7 +14,7 @@ export const site = {
   tagline: "A clear plan for your unsecured debt — and you approve every step.",
   domain: "mydebtangel.com",
   phone: "(000) 000-0000", // TODO: placeholder — replace with the real number
-  email: "hello@mydebtangel.com",
+  email: "support@debtangel.example", // TODO: placeholder — replace with the real address
   applyUrl: "/apply",
   loginUrl: "/login",
   dashboardUrl: "/dashboard",
@@ -126,7 +126,7 @@ export const steps: Step[] = [
     title: "Fund one account",
     body: "Replace juggling minimums with one deposit into an account you control.",
     detail:
-      "Instead of many due dates, you fund a single dedicated account and watch it grow. You stay in control and approve every resolution before it happens.",
+      "Instead of many due dates, you fund a single dedicated account and watch it grow. The account is held at an FDIC-insured institution and the money stays yours — you own and control it, can withdraw and leave at any time without penalty, and get any remaining funds back within seven business days.",
     icon: "Wallet",
   },
   {
@@ -135,7 +135,7 @@ export const steps: Step[] = [
     title: "Resolve, account by account",
     body: "We negotiate each balance down — and you approve every settlement.",
     detail:
-      "As funds build, balances are resolved one by one for less than you owe. Track each resolution, the estimated difference versus minimum payments, and your progress in real time.",
+      "As funds build, balances are resolved one by one for less than you owe. You approve every settlement before it happens, and our performance-based fee applies only after a balance is actually resolved — $0 until then, with no prepayment penalty. Not all debts settle, and letting accounts go delinquent can affect your credit; you'll always see the trade-offs.",
     icon: "Handshake",
   },
   {
@@ -280,7 +280,19 @@ export const faqs: Faq[] = [
   },
   {
     q: "Will this affect my credit?",
-    a: "Likely yes, at least in the short term. In many resolution plans, accounts may go delinquent while balances are negotiated, which can lower your score. Everyone's credit is different and we can't promise a specific outcome. If protecting your score for an imminent mortgage or loan is your priority, we'll tell you honestly whether this is the right fit — even if that means not enrolling.",
+    a: "Yes — it can hurt your credit score in the short term, sometimes significantly. In many resolution plans, accounts go delinquent while balances are negotiated, and those delinquencies and any settlements can show on your credit report and stay there for years. Everyone's credit is different and we can't promise a specific outcome or recovery. If protecting your score for an imminent mortgage or loan is your priority, we'll tell you honestly whether this is the right fit — even if that means not enrolling.",
+  },
+  {
+    q: "What happens if I stop paying my creditors?",
+    a: "Be clear-eyed about this: if you stop making timely payments, creditors can keep adding late fees and interest, which increases what you owe; they can keep calling and reporting you late; and they can send accounts to collections or file a lawsuit. We are not a law firm and don't provide legal representation. The upside is that delinquency is often what brings a creditor to the table to settle — but it comes with real risk, which is why you approve every step and can leave at any time.",
+  },
+  {
+    q: "Who owns the money I deposit?",
+    a: "You do — always. Your deposits go into a dedicated account in your name at an FDIC-insured institution, administered by an independent provider. Debt Angel never takes ownership of your settlement funds. Nothing is paid to a creditor without your approval, and if you leave the program you get your remaining balance back (minus only fees already earned on debts that were actually settled) within seven business days.",
+  },
+  {
+    q: "Can I cancel anytime?",
+    a: "Yes. You can withdraw from the program at any time, for any reason, with no penalty — there's no lock-in and no prepayment penalty. Because our fee is performance-based, you're never charged for settlements that haven't happened. On withdrawal you receive the funds remaining in your dedicated account, less only any fees already earned on debts that were resolved, within seven business days.",
   },
   {
     q: "How long does it take?",

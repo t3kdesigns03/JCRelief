@@ -26,6 +26,10 @@ import { PlanProgressPanel } from "@/components/financial/PlanProgressPanel";
 import { TradelineForm, AddAccountButton } from "@/components/application/tradeline-form";
 import { ApplySuccessScreen } from "@/components/auth/apply-success-screen";
 import { Assumptions } from "@/components/shared/Assumptions";
+import {
+  KeyRisksRights,
+  TsrDisclosureSummary,
+} from "@/components/shared/disclosures";
 
 import {
   applicationSchema,
@@ -130,6 +134,9 @@ export function ApplyWizard({ prefill }: { prefill?: ApplyPrefill }) {
   }, [prefill, fields.length, append, setValue]);
 
   const tradelines = (watch("tradelines") ?? []) as Tradeline[];
+  const consentChecked = watch("consent") === true;
+  const agreementReviewed = watch("agreementReviewed") === true;
+  const canSubmit = consentChecked && agreementReviewed && !submitting;
 
   const goTo = (n: number) => {
     setStep(n);
@@ -335,7 +342,7 @@ export function ApplyWizard({ prefill }: { prefill?: ApplyPrefill }) {
                 type="submit"
                 variant="money"
                 size="lg"
-                disabled={submitting}
+                disabled={!canSubmit}
                 className="flex-1 sm:flex-none"
               >
                 {submitting ? (
@@ -624,6 +631,9 @@ function MonthlyStep({
           />
         </div>
       )}
+
+      {/* Funding involves setting money aside instead of paying minimums — surface the risks & rights here. */}
+      <KeyRisksRights />
     </div>
   );
 }
@@ -686,6 +696,8 @@ function ComparisonStep({
         currentMonthlyPayment={inputs.currentMonthlyPayment}
         monthlyBudget={inputs.monthlyBudget}
       />
+      {/* The plan involves settling for less than owed — restate the risks & rights. */}
+      <KeyRisksRights className="mt-6" />
     </div>
   );
 }
@@ -778,7 +790,60 @@ function SubmitStep({
         <p className="mt-1.5 text-sm text-foreground/65">{fit.body}</p>
       </div>
 
-      {/* Consent */}
+      {/* The four required pre-enrollment disclosures, restated before submit. */}
+      <TsrDisclosureSummary variant="compact" />
+
+      {/* Mandatory document review — gates submit (also enforced in schema). */}
+      <div>
+        <Controller
+          control={control}
+          name="agreementReviewed"
+          render={({ field }) => (
+            <label className="flex cursor-pointer items-start gap-3 rounded-2xl border border-gold/40 bg-gold/[0.06] p-4">
+              <input
+                type="checkbox"
+                className="mt-1 h-5 w-5 shrink-0 rounded border-input accent-[#D4AF37]"
+                checked={!!field.value}
+                onChange={(e) => field.onChange(e.target.checked)}
+              />
+              <span className="text-sm text-foreground/80">
+                I have carefully reviewed the{" "}
+                <Link
+                  href="/agreement"
+                  target="_blank"
+                  className="font-semibold text-gold hover:underline"
+                >
+                  Program Agreement
+                </Link>
+                ,{" "}
+                <Link
+                  href="/terms"
+                  target="_blank"
+                  className="font-semibold text-gold hover:underline"
+                >
+                  Terms of Service
+                </Link>
+                , and{" "}
+                <Link
+                  href="/privacy"
+                  target="_blank"
+                  className="font-semibold text-gold hover:underline"
+                >
+                  Privacy Policy
+                </Link>
+                , and I understand the risks and my rights.
+              </span>
+            </label>
+          )}
+        />
+        {errors.agreementReviewed?.message && (
+          <p className="mt-1 text-xs text-destructive">
+            {errors.agreementReviewed.message}
+          </p>
+        )}
+      </div>
+
+      {/* Contact consent */}
       <Controller
         control={control}
         name="consent"
@@ -792,15 +857,7 @@ function SubmitStep({
             />
             <span className="text-sm text-muted-foreground">
               I agree to be contacted about my plan and I understand this is an
-              application, not an offer or guarantee. I&rsquo;ve read the{" "}
-              <Link href="/terms" className="font-medium text-gold hover:underline">
-                Terms
-              </Link>{" "}
-              and{" "}
-              <Link href="/privacy" className="font-medium text-gold hover:underline">
-                Privacy Policy
-              </Link>
-              .
+              application, not an offer or guarantee.
             </span>
           </label>
         )}

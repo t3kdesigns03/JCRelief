@@ -145,3 +145,30 @@
       radial-gradient(80% 60% at 50% 100%, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
   }
 }
+
+/* Print styles — clean PDF export for legal documents (Program Agreement etc.).
+   Strips site chrome and forces high-contrast black text on white. */
+@media print {
+  [data-print-hide] {
+    display: none !important;
+  }
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  main {
+    background: #fff !important;
+  }
+  .legal-body,
+  .legal-body * {
+    color: #000 !important;
+  }
+  .legal-body a {
+    color: #000 !important;
+    text-decoration: underline;
+  }
+  a[href]::after {
+    content: "";
+  }
+}
