@@ -12,6 +12,7 @@ import {
 import {
   dedicatedAccountRights,
   keyRisksRights,
+  negativeConsequences,
   noAdvanceFee,
   tsrDisclosures,
 } from "@/lib/disclosures";
@@ -174,23 +175,9 @@ export function ImportantDisclosuresPanel({
               If you stop paying your creditors
             </p>
             <ul className="mt-2 list-disc space-y-1.5 pl-4 text-[13px] leading-relaxed text-foreground/80 marker:text-gold/60">
-              <li>
-                Your credit score can be damaged, often significantly, while
-                accounts go delinquent.
-              </li>
-              <li>
-                Creditors may add late fees and interest that increase your
-                balance, keep collecting, and can file a lawsuit. We are not a
-                law firm.
-              </li>
-              <li>
-                Not all debts settle — creditors are not required to accept any
-                offer.
-              </li>
-              <li>
-                Forgiven debt may be taxable and reported on a Form 1099-C.
-                Consider talking to a tax professional.
-              </li>
+              {negativeConsequences.map((c) => (
+                <li key={c}>{c}</li>
+              ))}
             </ul>
           </div>
           <div className="rounded-xl border border-money/25 bg-money/[0.07] p-3.5">

@@ -52,6 +52,18 @@ export const tsrDisclosures: TsrDisclosure[] = [
 ];
 
 /**
+ * Negative consequences of stopping timely payments to creditors — the plain,
+ * bulleted version reused by the estimator's Important Disclosures panel so the
+ * wording is identical to disclosure #4 above and to the Program Agreement.
+ */
+export const negativeConsequences: string[] = [
+  "Your credit score can be damaged, often significantly, while accounts go delinquent.",
+  "Creditors may add late fees and interest that increase your balance, keep collecting, and can file a lawsuit. We are not a law firm.",
+  "Not all debts settle — creditors are not required to accept any offer.",
+  "Forgiven debt may be taxable and reported on a Form 1099-C. Consider talking to a tax professional.",
+];
+
+/**
  * Dedicated-account rights — the customer owns and controls the funds, and can
  * leave at any time with a 7-business-day return of remaining funds.
  */
