@@ -149,18 +149,15 @@ export function EditAccounts({
         className="scroll-mt-24 rounded-3xl border border-white/10 bg-card p-5 shadow-soft sm:p-7"
       >
         <h2 className="font-display text-xl font-semibold">Your monthly picture</h2>
-        <IncomeCapture
-          className="mt-4"
-          value={income}
-          onChange={setIncome}
-        />
-        <ExpensesCapture
-          className="mt-4"
-          value={expenses}
-          onChange={setExpenses}
-          monthlyNetIncome={netIncome}
-        />
-        <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="mt-4 space-y-3">
+          <IncomeCapture value={income} onChange={setIncome} />
+          <ExpensesCapture
+            value={expenses}
+            onChange={setExpenses}
+            monthlyNetIncome={netIncome}
+          />
+        </div>
+        <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <Label htmlFor="current-monthly">Current total monthly payments ($)</Label>
             <Input

@@ -586,30 +586,27 @@ function MonthlyStep({
 
   return (
     <div className="space-y-6">
-      <div>
-        <Label>Your income helps us right-size the plan</Label>
+      <div className="space-y-3">
+        <p className="text-sm text-muted-foreground">
+          Share a little about your month so we can size a plan you can actually
+          afford. Both are optional.
+        </p>
         <Controller
           control={control}
           name="income"
           render={({ field }) => (
             <IncomeCapture
-              className="mt-2"
               value={field.value as IncomeInput}
               onChange={field.onChange}
               error={(errors.income as any)?.amount?.message ?? (errors.income as any)?.rangeId?.message}
             />
           )}
         />
-      </div>
-
-      <div>
-        <Label>Essential expenses (optional)</Label>
         <Controller
           control={control}
           name="essentialExpenses"
           render={({ field }) => (
             <ExpensesCapture
-              className="mt-2"
               value={(field.value ?? {}) as ExpensesInput}
               onChange={field.onChange}
               monthlyNetIncome={netIncome}

@@ -51,7 +51,7 @@ export function ExpensesCapture({
     return (
       <div
         className={cn(
-          "flex flex-col items-start gap-3 rounded-2xl border border-white/10 bg-card px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between",
+          "flex flex-col items-start gap-3 rounded-2xl border border-gold/20 bg-gold/[0.03] px-4 py-4 sm:flex-row sm:items-center sm:justify-between",
           className,
         )}
       >
@@ -103,7 +103,7 @@ export function ExpensesCapture({
         Fill in what you can — leave anything blank. Every field is optional.
       </p>
 
-      <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+      <div className="mt-4 grid grid-cols-1 gap-x-4 gap-y-3.5 sm:grid-cols-2">
         {expenseCategories.map((c) => {
           const key = c.key as ExpenseKey;
           const v = value[key];
@@ -141,31 +141,40 @@ export function ExpensesCapture({
       </div>
 
       {/* Live summary */}
-      <div className="mt-4 rounded-xl border border-gold/25 bg-gold/[0.06] p-4">
-        <SummaryRow
-          label="Monthly income"
-          value={income != null ? currency(income) : "Not added"}
-          muted={income == null}
-        />
-        <SummaryRow
-          label="Essential expenses"
-          value={`− ${currency(total ?? 0)}`}
-        />
-        <div className="mt-2.5 flex items-center justify-between gap-3 border-t border-white/10 pt-2.5">
-          <span className="text-sm font-semibold">Estimated leftover</span>
+      <div className="mt-5 rounded-xl border border-gold/25 bg-gold/[0.06] p-4 sm:p-5">
+        <div className="space-y-1.5">
+          <SummaryRow
+            label="Monthly income"
+            value={income != null ? currency(income) : "Not added"}
+            muted={income == null}
+          />
+          <SummaryRow
+            label="Essential expenses"
+            value={`− ${currency(total ?? 0)}`}
+          />
+        </div>
+        <div className="mt-3 flex items-end justify-between gap-3 border-t border-white/10 pt-3">
+          <div className="min-w-0">
+            <p className="text-sm font-semibold">Estimated leftover</p>
+            <p className="mt-0.5 text-[11px] leading-relaxed text-muted-foreground">
+              {leftover == null
+                ? "Add income above to see what's left"
+                : leftover >= 0
+                  ? "Your estimated capacity for debt each month"
+                  : "Your expenses are close to your income right now"}
+            </p>
+          </div>
           {leftover != null ? (
             <span
               className={cn(
-                "num-display text-lg font-bold tabular",
-                leftover > 0 ? "text-money" : "text-destructive",
+                "num-display shrink-0 text-2xl font-bold tabular",
+                leftover >= 0 ? "text-money" : "text-gold",
               )}
             >
               {currency(leftover)}
             </span>
           ) : (
-            <span className="text-[12px] text-muted-foreground">
-              Add income above to see leftover
-            </span>
+            <span className="shrink-0 text-lg text-muted-foreground">—</span>
           )}
         </div>
       </div>
