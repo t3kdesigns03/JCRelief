@@ -11,6 +11,8 @@ type CashFlowSummaryProps = {
   planSuggestedMonthly?: number;
   /** Real monthly net income when the user shared it; null/undefined → estimate. */
   monthlyNetIncome?: number | null;
+  /** Real total essential expenses when shared; null/undefined → estimate. */
+  essentialExpenses?: number | null;
   className?: string;
 };
 
@@ -19,6 +21,7 @@ export function CashFlowSummary({
   monthlyBudget,
   planSuggestedMonthly,
   monthlyNetIncome,
+  essentialExpenses,
   className,
 }: CashFlowSummaryProps) {
   const flow = buildCashFlowSnapshot({
@@ -26,23 +29,36 @@ export function CashFlowSummary({
     monthlyBudget,
     planSuggestedMonthly,
     monthlyNetIncome,
+    essentialExpenses,
   });
   const incomeFromUser = flow.incomeSource === "user";
+  const expensesFromUser = flow.expensesSource === "user";
 
   const income = flow.estimatedMonthlyIncome || 1;
   const deductions = [
-    {
-      key: "hard",
-      label: "Hard costs",
-      sub: "Housing, utilities, insurance",
-      value: flow.hardCosts,
-    },
-    {
-      key: "soft",
-      label: "Soft costs",
-      sub: "Food, transport, essentials",
-      value: flow.softCosts,
-    },
+    ...(expensesFromUser
+      ? [
+          {
+            key: "essential",
+            label: "Essential expenses",
+            sub: "Housing, utilities, food, transport",
+            value: flow.essentialCosts,
+          },
+        ]
+      : [
+          {
+            key: "hard",
+            label: "Hard costs",
+            sub: "Housing, utilities, insurance",
+            value: flow.hardCosts,
+          },
+          {
+            key: "soft",
+            label: "Soft costs",
+            sub: "Food, transport, essentials",
+            value: flow.softCosts,
+          },
+        ]),
     {
       key: "debt",
       label: "Debt payments",
@@ -67,9 +83,11 @@ export function CashFlowSummary({
           Monthly cash flow
         </h3>
         <p className="mt-1 text-sm text-muted-foreground">
-          {incomeFromUser
-            ? "Based on the income you shared. Costs below are illustrative estimates."
-            : "Illustrative breakdown from your inputs — not verified income."}
+          {incomeFromUser && expensesFromUser
+            ? "Based on the income and expenses you shared."
+            : incomeFromUser
+              ? "Based on the income you shared. Costs below are illustrative estimates."
+              : "Illustrative breakdown from your inputs — not verified income."}
         </p>
       </div>
 

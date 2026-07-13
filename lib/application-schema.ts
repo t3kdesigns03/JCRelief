@@ -143,6 +143,46 @@ export const incomeSchema = z
 
 export type IncomeInput = z.infer<typeof incomeSchema>;
 
+/**
+ * Essential monthly expenses. Every field optional — a user can fill some,
+ * all, or none. Categories are a fixed, ordered list here but stored as a
+ * flexible JSONB map, so adding categories later needs no migration and stays
+ * independent of the CRS pull.
+ */
+export const expenseCategories = [
+  { key: "housing", label: "Housing", hint: "Rent or mortgage" },
+  { key: "utilities", label: "Utilities", hint: "Electric, gas, water" },
+  { key: "phone", label: "Phone", hint: "" },
+  { key: "internet", label: "Internet", hint: "" },
+  { key: "groceries", label: "Groceries & food", hint: "" },
+  { key: "carPayment", label: "Car payment", hint: "" },
+  { key: "transportation", label: "Gas & transportation", hint: "" },
+  { key: "insurance", label: "Insurance", hint: "Auto, health, life" },
+  { key: "other", label: "Other essentials", hint: "" },
+] as const;
+
+export type ExpenseKey = (typeof expenseCategories)[number]["key"];
+
+const expenseField = z
+  .number({ invalid_type_error: "Enter an amount" })
+  .min(0)
+  .max(1_000_000)
+  .optional();
+
+export const expensesSchema = z.object({
+  housing: expenseField,
+  utilities: expenseField,
+  phone: expenseField,
+  internet: expenseField,
+  groceries: expenseField,
+  carPayment: expenseField,
+  transportation: expenseField,
+  insurance: expenseField,
+  other: expenseField,
+});
+
+export type ExpensesInput = z.infer<typeof expensesSchema>;
+
 export const applicationSchema = z.object({
   // Phase 1 — contact
   firstName: z.string().min(1, "Please enter your first name"),
@@ -169,6 +209,8 @@ export const applicationSchema = z.object({
   }),
   // Optional — improves DTI + affordability. Never gates progression.
   income: incomeSchema.optional(),
+  // Optional — real essential expenses sharpen residual capacity. Never gates.
+  essentialExpenses: expensesSchema.optional(),
 
   // Phase 6 — goals + qualification + consent
   goal: z.enum(values(goalOptions), {
@@ -211,6 +253,7 @@ export const defaultValues: Partial<ApplicationData> = {
     includesHousehold: false,
     source: "self_reported",
   },
+  essentialExpenses: {},
   goal: undefined,
   creditPriority: undefined,
   timeline: undefined,

@@ -12,12 +12,14 @@ import { ComparisonView } from "@/components/shared/comparison-view";
 import { PlanProgressPanel } from "@/components/financial/PlanProgressPanel";
 import { CashFlowSummary } from "@/components/financial/CashFlowSummary";
 import { IncomeCapture } from "@/components/financial/IncomeCapture";
+import { ExpensesCapture } from "@/components/financial/ExpensesCapture";
 import { Assumptions } from "@/components/shared/Assumptions";
 import { TradelineForm, AddAccountButton } from "@/components/application/tradeline-form";
 import { estimate, buildComparison, type Tradeline } from "@/lib/estimator";
 import { updateApplication } from "@/lib/actions/update-application";
 import { monthlyNetIncome } from "@/lib/income";
-import type { IncomeInput } from "@/lib/application-schema";
+import { totalEssentialExpenses } from "@/lib/expenses";
+import type { IncomeInput, ExpensesInput } from "@/lib/application-schema";
 import { currency } from "@/lib/utils";
 
 type EditAccountsProps = {
@@ -26,6 +28,7 @@ type EditAccountsProps = {
   initialCurrentMonthlyPayment: number;
   initialMonthlyBudget: number;
   initialIncome: IncomeInput;
+  initialExpenses: ExpensesInput;
 };
 
 export function EditAccounts({
@@ -34,6 +37,7 @@ export function EditAccounts({
   initialCurrentMonthlyPayment,
   initialMonthlyBudget,
   initialIncome,
+  initialExpenses,
 }: EditAccountsProps) {
   const router = useRouter();
   const [tradelines, setTradelines] = React.useState<Tradeline[]>(initialTradelines);
@@ -42,7 +46,9 @@ export function EditAccounts({
   );
   const [monthlyBudget, setMonthlyBudget] = React.useState(initialMonthlyBudget);
   const [income, setIncome] = React.useState<IncomeInput>(initialIncome);
+  const [expenses, setExpenses] = React.useState<ExpensesInput>(initialExpenses);
   const netIncome = monthlyNetIncome(income);
+  const expensesTotal = totalEssentialExpenses(expenses);
   const [editingId, setEditingId] = React.useState<string | null>(null);
   const [showAdd, setShowAdd] = React.useState(false);
   const [saving, setSaving] = React.useState(false);
@@ -89,6 +95,7 @@ export function EditAccounts({
       currentMonthlyPayment: Number(currentMonthlyPayment) || 0,
       monthlyBudget: Number(monthlyBudget) || 0,
       income,
+      essentialExpenses: expenses,
     });
     setSaving(false);
     if (!result.ok) {
@@ -147,6 +154,12 @@ export function EditAccounts({
           value={income}
           onChange={setIncome}
         />
+        <ExpensesCapture
+          className="mt-4"
+          value={expenses}
+          onChange={setExpenses}
+          monthlyNetIncome={netIncome}
+        />
         <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <Label htmlFor="current-monthly">Current total monthly payments ($)</Label>
@@ -182,6 +195,7 @@ export function EditAccounts({
               monthlyBudget={monthlyBudget || Math.max(minSum * 0.7, 150)}
               planSuggestedMonthly={comparison?.proposed.monthlyPayment}
               monthlyNetIncome={netIncome}
+              essentialExpenses={expensesTotal}
             />
           </div>
         )}

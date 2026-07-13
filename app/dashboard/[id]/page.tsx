@@ -61,6 +61,12 @@ export default async function PlanDetailPage({ params }: PageProps) {
     incomeMonthlyNet != null &&
     incomeMonthlyNet > 0;
 
+  const expensesTotal =
+    app.essential_expenses_total != null
+      ? Number(app.essential_expenses_total)
+      : null;
+  const expensesShared = expensesTotal != null && expensesTotal > 0;
+
   return (
     <main className="relative min-h-screen bg-background bg-grid">
       <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-64 gradient-halo" />
@@ -139,22 +145,17 @@ export default async function PlanDetailPage({ params }: PageProps) {
               Edit
             </Link>
           </div>
-          <div className="flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-card px-4 py-3.5 shadow-soft">
-            <div className="min-w-0">
-              <p className="text-xs text-muted-foreground">Monthly take-home income</p>
-              <p className="num-display mt-0.5 text-lg font-semibold tabular">
-                {incomeShared ? currency(incomeMonthlyNet!) : "Not provided"}
-              </p>
-            </div>
-            <span
-              className={
-                incomeShared
-                  ? "shrink-0 rounded-full border border-money/30 bg-money/10 px-2.5 py-1 text-[11px] font-medium text-money"
-                  : "shrink-0 rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1 text-[11px] font-medium text-muted-foreground"
-              }
-            >
-              {incomeShared ? "From you" : "Using estimate"}
-            </span>
+          <div className="divide-y divide-white/10 overflow-hidden rounded-2xl border border-white/10 bg-card shadow-soft">
+            <MonthlyRow
+              label="Monthly take-home income"
+              value={incomeShared ? currency(incomeMonthlyNet!) : "Not provided"}
+              shared={incomeShared}
+            />
+            <MonthlyRow
+              label="Essential monthly expenses"
+              value={expensesShared ? currency(expensesTotal!) : "Not provided"}
+              shared={expensesShared}
+            />
           </div>
         </div>
 
@@ -184,6 +185,34 @@ export default async function PlanDetailPage({ params }: PageProps) {
         </p>
       </div>
     </main>
+  );
+}
+
+function MonthlyRow({
+  label,
+  value,
+  shared,
+}: {
+  label: string;
+  value: string;
+  shared: boolean;
+}) {
+  return (
+    <div className="flex items-center justify-between gap-3 px-4 py-3.5">
+      <div className="min-w-0">
+        <p className="text-xs text-muted-foreground">{label}</p>
+        <p className="num-display mt-0.5 text-lg font-semibold tabular">{value}</p>
+      </div>
+      <span
+        className={
+          shared
+            ? "shrink-0 rounded-full border border-money/30 bg-money/10 px-2.5 py-1 text-[11px] font-medium text-money"
+            : "shrink-0 rounded-full border border-white/10 bg-white/[0.03] px-2.5 py-1 text-[11px] font-medium text-muted-foreground"
+        }
+      >
+        {shared ? "From you" : "Using estimate"}
+      </span>
+    </div>
   );
 }
 

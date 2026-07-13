@@ -9,6 +9,10 @@ export type CashFlowSnapshot = {
   incomeSource: "user" | "estimated";
   hardCosts: number;
   softCosts: number;
+  /** Combined essential living costs (real total when given, else hard+soft). */
+  essentialCosts: number;
+  /** "user" when essential costs came from real expense inputs, else "estimated". */
+  expensesSource: "user" | "estimated";
   currentDebtPayments: number;
   disposableIncome: number;
   planDeposit: number;
@@ -23,6 +27,8 @@ export function buildCashFlowSnapshot(params: {
   planSuggestedMonthly?: number;
   /** Real monthly net income when the user provided it; null/undefined → estimate. */
   monthlyNetIncome?: number | null;
+  /** Real total essential expenses when provided; null/undefined → estimate. */
+  essentialExpenses?: number | null;
 }): CashFlowSnapshot {
   const debt = Math.max(0, params.currentMonthlyPayment);
   const budget = Math.max(0, params.monthlyBudget);
@@ -37,11 +43,26 @@ export function buildCashFlowSnapshot(params: {
     ? Math.round(params.monthlyNetIncome!)
     : Math.round(Math.max(debt / 0.15, (debt + budget) * 1.35, 3500));
 
-  const hardCosts = Math.round(estimatedMonthlyIncome * 0.42);
-  const softCosts = Math.round(estimatedMonthlyIncome * 0.22);
+  const hasRealExpenses =
+    params.essentialExpenses != null && params.essentialExpenses > 0;
+
+  // Real residual when the user shared expenses; otherwise the heuristic split.
+  let hardCosts: number;
+  let softCosts: number;
+  let essentialCosts: number;
+  if (hasRealExpenses) {
+    essentialCosts = Math.round(params.essentialExpenses!);
+    hardCosts = essentialCosts;
+    softCosts = 0;
+  } else {
+    hardCosts = Math.round(estimatedMonthlyIncome * 0.42);
+    softCosts = Math.round(estimatedMonthlyIncome * 0.22);
+    essentialCosts = hardCosts + softCosts;
+  }
+
   const disposable = Math.max(
     0,
-    estimatedMonthlyIncome - hardCosts - softCosts - debt,
+    estimatedMonthlyIncome - essentialCosts - debt,
   );
 
   return {
@@ -49,6 +70,8 @@ export function buildCashFlowSnapshot(params: {
     incomeSource: hasRealIncome ? "user" : "estimated",
     hardCosts,
     softCosts,
+    essentialCosts,
+    expensesSource: hasRealExpenses ? "user" : "estimated",
     currentDebtPayments: debt,
     disposableIncome: disposable,
     planDeposit: plan,

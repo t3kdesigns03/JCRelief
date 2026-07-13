@@ -31,6 +31,7 @@ export function computePlan(
   currentMonthlyPayment: number,
   monthlyBudget: number,
   monthlyNetIncome?: number | null,
+  essentialExpenses?: number | null,
 ): ComputedPlan {
   const portfolio = summarizePortfolio(tradelines);
   const totalDebt = portfolio.totalBalance;
@@ -49,11 +50,13 @@ export function computePlan(
   const comparison = buildComparison(inputs, plan);
 
   const income = monthlyNetIncome ?? null;
+  const expenses = essentialExpenses ?? null;
   const cashFlow = buildCashFlowSnapshot({
     currentMonthlyPayment: resolvedCurrentMonthly,
     monthlyBudget,
     planSuggestedMonthly: plan.suggestedMonthly,
     monthlyNetIncome: income,
+    essentialExpenses: expenses,
   });
 
   // Affordability guardrail: never recommend a deposit above real disposable

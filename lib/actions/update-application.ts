@@ -3,9 +3,14 @@
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
-import { tradelineSchema, incomeSchema } from "@/lib/application-schema";
+import {
+  tradelineSchema,
+  incomeSchema,
+  expensesSchema,
+} from "@/lib/application-schema";
 import { computePlan, planColumns, tradelineToRow } from "@/lib/plan";
 import { monthlyNetIncome, incomeColumns } from "@/lib/income";
+import { totalEssentialExpenses, expensesColumns } from "@/lib/expenses";
 import { isAnonymousUser } from "@/lib/auth/session";
 
 const updateSchema = z.object({
@@ -14,6 +19,7 @@ const updateSchema = z.object({
   currentMonthlyPayment: z.number().min(0),
   monthlyBudget: z.number().min(0),
   income: incomeSchema.optional(),
+  essentialExpenses: expensesSchema.optional(),
 });
 
 export type UpdateApplicationInput = z.infer<typeof updateSchema>;
@@ -47,8 +53,14 @@ export async function updateApplication(
     };
   }
 
-  const { applicationId, tradelines, currentMonthlyPayment, monthlyBudget, income } =
-    parsed.data;
+  const {
+    applicationId,
+    tradelines,
+    currentMonthlyPayment,
+    monthlyBudget,
+    income,
+    essentialExpenses,
+  } = parsed.data;
 
   // Confirm ownership before mutating (RLS also enforces this).
   const { data: existing, error: fetchError } = await supabase
@@ -63,17 +75,20 @@ export async function updateApplication(
   }
 
   const netIncome = monthlyNetIncome(income);
+  const expensesTotal = totalEssentialExpenses(essentialExpenses);
   const computed = computePlan(
     tradelines,
     currentMonthlyPayment,
     monthlyBudget,
     netIncome,
+    expensesTotal,
   );
 
   const { error: updateError } = await supabase
     .from("applications")
     .update({
       ...incomeColumns(income),
+      ...expensesColumns(essentialExpenses),
       ...planColumns(computed),
       status: "reviewing",
     })
